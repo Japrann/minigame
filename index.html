@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Boldonse&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Minigame buatan japran</title>
+  <style>
+    body {
+      font-family: 'Boldonse', sans-serif;
+      background: linear-gradient(135deg, #3b124785, #4b263f);
+      color: rgb(255, 253, 184);
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-weight: 500;
+    }
+
+    #msg {
+      margin-top: 10px;
+      font-size: 14px;
+      opacity: 0.8;
+      min-height: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 90px);
+      gap: 12px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .card {
+      width: 90px;
+      height: 90px;
+      background: #ff4a7a;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 28px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .open {
+      background: white;
+      color: black;
+      transform: scale(1.05);
+    }
+
+    #end {
+      margin-top: 25px;
+      font-size: 16px;
+      opacity: 0;
+      transition: 0.5s;
+    }
+
+    .show {
+      opacity: 1;
+    }
+
+    button {
+      font-family: 'Archivo', sans-serif;  
+      margin-top: 20px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #000000;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #7a87ff;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Main ini sap kalo gabuy</h1>
+<div id="msg"></div>
+
+<div class="grid" id="grid"></div>
+
+<div id="end"></div>
+<button onclick="restart()">Pencet ini buat ngulang</button>
+
+<script>
+const items = ["🍵","🌧️","🎧","🍫","😴","📱"];
+let cards = [];
+let first = null;
+let second = null;
+let lock = false;
+let matched = 0;
+
+const messages = {
+  "🍵": "ini matcha kayanya",
+  "🌧️": "random aja bingung emoji apalagi jir",
+  "🎧": "saranin lagu sap",
+  "🍫": "ini enak banget",
+  "😴": "ini juga random aja biar ga monoton HAHAHA",
+  "📱": "buka reels yang gua kirim sap"
+};
+
+function shuffle() {
+  return [...items, ...items].sort(() => 0.5 - Math.random());
+}
+
+function createBoard() {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  cards = shuffle();
+  matched = 0;
+
+  cards.forEach((item) => {
+    const div = document.createElement("div");
+    div.classList.add("card");
+    div.dataset.value = item;
+
+    div.onclick = () => {
+      if (lock || div.classList.contains("open")) return;
+
+      div.textContent = item;
+      div.classList.add("open");
+
+      if (!first) {
+        first = div;
+      } else {
+        second = div;
+        lock = true;
+
+        if (first.dataset.value === second.dataset.value) {
+          matched++;
+          document.getElementById("msg").textContent = messages[item];
+
+          first = null;
+          second = null;
+          lock = false;
+
+          if (matched === items.length) {
+            document.getElementById("end").textContent = "not bad... btw gue seneng bisa kenal lu 😄";
+            document.getElementById("end").classList.add("show");
+          }
+
+        } else {
+          setTimeout(() => {
+            first.textContent = "";
+            second.textContent = "";
+            first.classList.remove("open");
+            second.classList.remove("open");
+
+            first = null;
+            second = null;
+            lock = false;
+          }, 700);
+        }
+      }
+    };
+
+    grid.appendChild(div);
+  });
+}
+
+function restart() {
+  first = null;
+  second = null;
+  lock = false;
+  document.getElementById("msg").textContent = "";
+  document.getElementById("end").classList.remove("show");
+  createBoard();
+}
+
+createBoard();
+</script>
+
+</body>
+</html>
