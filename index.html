@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Boldonse&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Minigame buatan japran</title>
+
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Boldonse', sans-serif;
@@ -16,55 +18,55 @@
       color: rgb(255, 253, 184);
       text-align: center;
       margin: 0;
-      padding: 0;
+      padding: 12px;
     }
 
     h1 {
-      margin-top: 30px;
+      margin-top: 20px;
       font-weight: 500;
+      font-size: 20px;
     }
 
     #msg {
-      margin-top: 10px;
-      font-size: 14px;
-      opacity: 0.8;
+      margin-top: 8px;
+      font-size: 13px;
+      opacity: 0.85;
       min-height: 20px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(4, 90px);
-      gap: 12px;
-      justify-content: center;
-      margin-top: 30px;
+      grid-template-columns: repeat(4, minmax(60px, 1fr));
+      gap: 10px;
+      max-width: 400px;
+      margin: 25px auto;
     }
 
     .card {
-      width: 90px;
-      height: 90px;
+      width: 100%;
+      aspect-ratio: 1 / 1;
       background: #ff4a7a;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 28px;
-      transition: all 0.3s ease;
+      font-size: 22px;
+      transition: all 0.25s ease;
     }
 
-    .card:hover {
-      transform: scale(1.05);
+    .card:active {
+      transform: scale(0.95);
     }
 
     .open {
       background: white;
       color: black;
-      transform: scale(1.05);
     }
 
     #end {
-      margin-top: 25px;
-      font-size: 16px;
+      margin-top: 20px;
+      font-size: 14px;
       opacity: 0;
       transition: 0.5s;
     }
@@ -74,18 +76,29 @@
     }
 
     button {
-      font-family: 'Archivo', sans-serif;  
-      margin-top: 20px;
-      padding: 8px 16px;
+      font-family: 'Archivo', sans-serif;
+      margin-top: 15px;
+      padding: 8px 14px;
       border: none;
       border-radius: 8px;
-      background: #000000;
+      background: black;
       color: white;
       cursor: pointer;
+      font-size: 13px;
     }
 
-    button:hover {
-      background: #7a87ff;
+    button:active {
+      transform: scale(0.95);
+    }
+
+    @media (min-width: 600px) {
+      h1 {
+        font-size: 26px;
+      }
+
+      .card {
+        font-size: 26px;
+      }
     }
   </style>
 </head>
@@ -151,10 +164,11 @@ function createBoard() {
           second = null;
           lock = false;
 
-          if (matched === items.length) {
-            document.getElementById("end").textContent = "not bad... btw gue seneng bisa kenal lu 😄";
-            document.getElementById("end").classList.add("show");
-          }
+         if (matched >= items.length) {
+  const endText = document.getElementById("end");
+  endText.textContent = "not bad... hebat juga bisa kelarin ini";
+  endText.style.opacity = "1"; // paksa muncul
+}
 
         } else {
           setTimeout(() => {
@@ -166,7 +180,7 @@ function createBoard() {
             first = null;
             second = null;
             lock = false;
-          }, 700);
+          }, 600);
         }
       }
     };
